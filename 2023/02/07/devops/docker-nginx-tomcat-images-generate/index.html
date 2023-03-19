@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Docker部署Nginx通过Docker部署Nginx服务 123456789## 启动centos容器docker run --name nginx-m -p 80 -itd centos## 进入容器内部docker exec -it nginx-m &#x2F;bin&#x2F;bash## 确定ipip addr  # 172.17.0.2##  安装wget和nginxyum install -y wge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写Dockerfile制作nginx和tomcat服务Docker镜像">
+<meta property="og:url" content="https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/index.html">
+<meta property="og:site_name" content="bin&#96;s weblog">
+<meta property="og:description" content="Docker部署Nginx通过Docker部署Nginx服务 123456789## 启动centos容器docker run --name nginx-m -p 80 -itd centos## 进入容器内部docker exec -it nginx-m &#x2F;bin&#x2F;bash## 确定ipip addr  # 172.17.0.2##  安装wget和nginxyum install -y wge">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-07T17:20:23.000Z">
+<meta property="article:modified_time" content="2023-03-19T12:58:55.111Z">
+<meta property="article:author" content="Bin Fu">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>编写Dockerfile制作nginx和tomcat服务Docker镜像</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/02/08/devops/docker-offline-install-in-centos7/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/02/07/devops/docker-quickstart-note/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&text=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&is_video=false&description=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=编写Dockerfile制作nginx和tomcat服务Docker镜像&body=Check out this article: https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&name=编写Dockerfile制作nginx和tomcat服务Docker镜像&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&t=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker%E9%83%A8%E7%BD%B2Nginx"><span class="toc-number">1.</span> <span class="toc-text">Docker部署Nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker%E9%83%A8%E7%BD%B2Tomcat"><span class="toc-number">2.</span> <span class="toc-text">Docker部署Tomcat</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        编写Dockerfile制作nginx和tomcat服务Docker镜像
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bin Fu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-07T17:20:23.000Z" itemprop="datePublished">2023-02-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/docker/" rel="tag">docker</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Docker部署Nginx"><a href="#Docker部署Nginx" class="headerlink" title="Docker部署Nginx"></a>Docker部署Nginx</h1><p>通过Docker部署Nginx服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 启动centos容器</span></span></span><br><span class="line">docker run --name nginx-m -p 80 -itd centos</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 进入容器内部</span></span></span><br><span class="line">docker exec -it nginx-m /bin/bash</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 确定ip</span></span></span><br><span class="line">ip addr  # 172.17.0.2</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  安装wget和nginx</span></span></span><br><span class="line">yum install -y wget</span><br><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>begin 出现错误：Failed to download metadata for repo ‘AppStream’</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 执行如下命令解决</span></span></span><br><span class="line">cd /etc/yum.repos.d/</span><br><span class="line">sed -i &#x27;s/mirrorlist/#mirrorlist/g&#x27; /etc/yum.repos.d/CentOS-*</span><br><span class="line">sed -i &#x27;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g&#x27; /etc/yum.repos.d/CentOS-*</span><br><span class="line">yum update -y</span><br></pre></td></tr></table></figure>
+<p>创建web页面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  安装文本编辑器</span></span></span><br><span class="line">yum install vim-enhanced -y</span><br><span class="line"></span><br><span class="line">mkdir /var/www/html -p</span><br><span class="line">cd /var/www/html/</span><br><span class="line">vi index.html</span><br><span class="line">&lt;html&gt;</span><br><span class="line"> &lt;head&gt;</span><br><span class="line"> &lt;title&gt;nginx in docker&lt;/title&gt;</span><br><span class="line"> &lt;/head&gt;</span><br><span class="line"> &lt;body&gt;</span><br><span class="line"> &lt;h1&gt;hello,My Name is lessismore&lt;/h1&gt;</span><br><span class="line"> &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>修改 nginx 配置文件中的 root 路径，如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/nginx.conf</span><br><span class="line">root /var/www/html/;</span><br></pre></td></tr></table></figure>
+<p>启动 nginx</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/nginx</span><br></pre></td></tr></table></figure>
+<p>访问测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># exit容器外访问</span></span></span><br><span class="line">docker ps | grep nginx-m</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查看端口号后</span></span></span><br><span class="line">curl http:locahost:ip</span><br><span class="line"></span><br><span class="line">也可以访问容器ip</span><br><span class="line">curl http://172.17.0.2:80</span><br></pre></td></tr></table></figure>
+<h1 id="Docker部署Tomcat"><a href="#Docker部署Tomcat" class="headerlink" title="Docker部署Tomcat"></a>Docker部署Tomcat</h1><p>下载jdk：wget <a target="_blank" rel="noopener" href="https://d6.injdk.cn/oraclejdk/8/jdk-8u341-linux-x64.rpm">https://d6.injdk.cn/oraclejdk/8/jdk-8u341-linux-x64.rpm</a><br>下载tomcat：wget <a target="_blank" rel="noopener" href="https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.83/bin/apache-tomcat-8.5.83.tar.gz">https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.83/bin/apache-tomcat-8.5.83.tar.gz</a></p>
+<p>编写Dockerfile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vi dockerfile</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">基础镜像</span></span><br><span class="line">FROM centos</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">复制jdk</span></span><br><span class="line">ADD jdk-8u341-linux-x64.rpm /usr/local/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">复制并解压tomcat</span></span><br><span class="line">ADD apache-tomcat-8.5.83.tar.gz /usr/local/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装jdk</span></span><br><span class="line">RUN cd /usr/local &amp;&amp; rpm -ivh jdk-8u341-linux-x64.rpm</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重命名tomcat</span></span><br><span class="line">RUN mv /usr/local/apache-tomcat-8.5.83 /usr/local/tomcat8</span><br><span class="line">EXPOSE 8080</span><br></pre></td></tr></table></figure>
+<p>创建并启动容器，验证是否启动成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建容器</span></span><br><span class="line">docker build -t=&quot;tomcat8:v1&quot; .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行容器</span></span><br><span class="line">docker run --name tomcat8 -itd -p 8080 tomcat8:v1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入运行中容器</span></span><br><span class="line">docker exec -it tomcat8 /bin/bash</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动tomcat</span></span><br><span class="line">/usr/local/tomcat8/bin/startup.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">访问测试</span></span><br><span class="line">curl localhost:8080</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker%E9%83%A8%E7%BD%B2Nginx"><span class="toc-number">1.</span> <span class="toc-text">Docker部署Nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker%E9%83%A8%E7%BD%B2Tomcat"><span class="toc-number">2.</span> <span class="toc-text">Docker部署Tomcat</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&text=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&is_video=false&description=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=编写Dockerfile制作nginx和tomcat服务Docker镜像&body=Check out this article: https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&title=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&name=编写Dockerfile制作nginx和tomcat服务Docker镜像&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/07/devops/docker-nginx-tomcat-images-generate/&t=编写Dockerfile制作nginx和tomcat服务Docker镜像"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2023
+    Bin Fu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fubinh521/fubinh521.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

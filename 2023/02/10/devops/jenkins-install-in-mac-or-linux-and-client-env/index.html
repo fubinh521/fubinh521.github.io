@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Mac 安装Jenkins(1) 常规做法：安装homebrew来管理mac上的jenkins或其他软件 需要开通https:&#x2F;&#x2F;github.comhttps:&#x2F;&#x2F;raw.githubusercontent.com (安装homebrew)，国外网速限制，建议配置清华镜像homebrew：https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;help&#x2F;homebrew&#x2F; 安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac和Linux安装和启动Jenkins并配置JavaClient调用环境">
+<meta property="og:url" content="https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/index.html">
+<meta property="og:site_name" content="bin&#96;s weblog">
+<meta property="og:description" content="Mac 安装Jenkins(1) 常规做法：安装homebrew来管理mac上的jenkins或其他软件 需要开通https:&#x2F;&#x2F;github.comhttps:&#x2F;&#x2F;raw.githubusercontent.com (安装homebrew)，国外网速限制，建议配置清华镜像homebrew：https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;help&#x2F;homebrew&#x2F; 安装">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-10T11:26:32.000Z">
+<meta property="article:modified_time" content="2023-03-19T12:58:55.111Z">
+<meta property="article:author" content="Bin Fu">
+<meta property="article:tag" content="jenkins">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Mac和Linux安装和启动Jenkins并配置JavaClient调用环境</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/02/12/linux/linux-disk-full/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/02/09/algorithm/algorithm-leetcode-bit-computer/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&text=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&is_video=false&description=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境&body=Check out this article: https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&name=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&t=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac-%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">1.</span> <span class="toc-text">Mac 安装Jenkins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-CentOS%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">2.</span> <span class="toc-text">Linux CentOS安装Jenkins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jenkins-Java-Client-API%E6%9C%AC%E5%9C%B0%E8%B0%83%E7%94%A8%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">Jenkins Java Client API本地调用环境</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Mac和Linux安装和启动Jenkins并配置JavaClient调用环境
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bin Fu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-10T11:26:32.000Z" itemprop="datePublished">2023-02-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E6%97%A5%E5%BF%97/">工作日志</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/jenkins/" rel="tag">jenkins</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Mac-安装Jenkins"><a href="#Mac-安装Jenkins" class="headerlink" title="Mac 安装Jenkins"></a>Mac 安装Jenkins</h2><p>(1) 常规做法：安装homebrew来管理mac上的jenkins或其他软件</p>
+<p>需要开通<a target="_blank" rel="noopener" href="https://github.com/">https://github.com</a><br><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/">https://raw.githubusercontent.com</a> (安装homebrew)，国外网速限制，建议配置清华镜像homebrew：<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</a></p>
+<p>安装jenkins：brew install jenkins  ， 会自动下载所需的依赖 ， homebrew详细用法移步：<a target="_blank" rel="noopener" href="https://brew.sh/index_zh-cn">https://brew.sh/index_zh-cn</a></p>
+<p>通过homedrew安装后jenkins安装好后所在的位置：<br>实际安装位置：&#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;jenkins&#x2F;<br>配置文件所在位置：&#x2F;usr&#x2F;local&#x2F;opt&#x2F;jenkins&#x2F;<br>工作空间位置：&#x2F;Users&#x2F;用户&#x2F;.jenkins<br>进入工作空间位置：cd ~&#x2F;.jenkins</p>
+<p>修改默认端口的方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 打开文件 vi /usr/local/opt/jenkins/homebrew.mxcl.jenkins.plist</span><br><span class="line">2. 修改默认端口号8090</span><br><span class="line">• 启动jenkins： brew services start jenkins</span><br><span class="line">• 停止jenkins：brew services stop jenkins</span><br><span class="line">• 重启Jenkins：brew services restart jenkins</span><br></pre></td></tr></table></figure>
+
+<p>命令行下修改Jenkins端口：sudo defaults write &#x2F;Library&#x2F;Preferences&#x2F;org.jenkins-ci httpPort 8090<br>启动jenkins ：sudo launchctl load &#x2F;Library&#x2F;LaunchDaemons&#x2F;org.jenkins-ci.plist<br>停止jenkins：sudo launchctl unload &#x2F;Library&#x2F;LaunchDaemons&#x2F;org.jenkins-ci.plist</p>
+<blockquote>
+<p> 使用上目前可能出现两种(brew和launchctl)开启起动方式，如果重启出现不能用，建议手动杀掉进程，手动执行brew services start jenkins</p>
+</blockquote>
+<p>(2) war包直接安装</p>
+<p>遇到brew安装升级有问题，可以直接下载war包来启动jenkins，或者替换已经使用brew安装好的<code>/usr/local/Cellar/jenkins/</code>路径下的war包</p>
+<p>命令行启动如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup /usr/bin/java -Dmail.smtp.starttls.enable=true -Dhudson.util.ProcessTreeKiller.disable=true  \</span><br><span class="line"></span><br><span class="line">-jar /usr/local/op t/jenkins/libexec/jenkins.war --httpListenAddress=0.0.0.0 --httpPort=8090 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>(3)其他</p>
+<blockquote>
+<p>jenkins开放局域网访问</p>
+</blockquote>
+<p>使用brew安装jenkins会避免很多其他安装方式产生的用户权限问题，但是会将httpListenAddress默认设置为127.0.0.1，<br>这样我们虽然可以在本地用localhost:8080访问，但是本机和局域网均无法用ip访问。解决办法为修改两个路径下的plist配置。并重启<br>~&#x2F;Library&#x2F;LaunchAgents&#x2F;homebrew.mxcl.jenkins.plist<br>&#x2F;usr&#x2F;local&#x2F;opt&#x2F;jenkins&#x2F;homebrew.mxcl.jenkins.plist<br>将上面两个plist中的httpListenAddress后的ip地址，修改为本机IP或者0.0.0.0即可</p>
+<h2 id="Linux-CentOS安装Jenkins"><a href="#Linux-CentOS安装Jenkins" class="headerlink" title="Linux CentOS安装Jenkins"></a>Linux CentOS安装Jenkins</h2><p>rpm安装：<a target="_blank" rel="noopener" href="https://pkg.jenkins.io/redhat-stable/">https://pkg.jenkins.io/redhat-stable/</a> 下载rpm包 执行 <code>rpm -ivh jenkins-2.213-1.1.noarch.rpm</code></p>
+<p>启动jenkins : service jenkins start &#x2F; systemctl start jenkins<br>停止jenkins : service jenkins stop &#x2F; systemctl stop jenkins<br>重启jenkins : service jenkins restart &#x2F; systemctl restart jenkins</p>
+<blockquote>
+<p>设置jenkins相关配置 ： 进入&#x2F;etc&#x2F;sysconfig&#x2F;jenkins </p>
+</blockquote>
+<p>端口 ： JENKINS_PORT：8090<br>主目录 : JENKINS_HOME :jenkins默认主目录为：&#x2F;var&#x2F;lib&#x2F;jenkins，存放软件和业务数据<br>JENKINS_USER&#x3D;”root”</p>
+<blockquote>
+<p>编辑jenkins配置中的jdk参数 : &#x2F;etc&#x2F;init.d&#x2F;jenkins  </p>
+</blockquote>
+<p>设置该参数candidates&#x3D;&#x2F;opt&#x2F;app&#x2F;jdk1.8.0_211&#x2F;bin&#x2F;java (jdk安装目录，通过which java命令获取)</p>
+<blockquote>
+<p>修改插件下载源地址</p>
+</blockquote>
+<p> 打开文件：&#x2F;var&#x2F;lib&#x2F;jenkins&#x2F;hudson.model.UpdateCenter.xml<br>替换地址：<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json">https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</a></p>
+<p>rpm卸载：<code>rpm -e jenkins</code></p>
+<p><code>rpm -ql jenkins</code> 检查是否卸载成功</p>
+<p>彻底删除残留文件： <code>find / -iname jenkins | xargs -n 1000 rm -rf</code></p>
+<blockquote>
+<p>在Linux构建Android和Java应用还需要安装：jdk，maven，git，gradle，sdk，node等 </p>
+</blockquote>
+<p>安装这些环境的步骤大同小异：下载解压安装包，配置系统环境变量，通常是编辑&#x2F;etc&#x2F;profile : vi &#x2F;etc&#x2F;profile  ， </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#java</span></span><br><span class="line">export JAVA_HOME=/root/phoenix/jdk1<span class="number">.8</span><span class="number">.0_211</span></span><br><span class="line">export PATH=$JAVA_HOME/<span class="built_in">bin</span>:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>最后执行 ：source &#x2F;etc&#x2F;profile 使环境变量生效即可。</p>
+<h2 id="Jenkins-Java-Client-API本地调用环境"><a href="#Jenkins-Java-Client-API本地调用环境" class="headerlink" title="Jenkins Java Client API本地调用环境"></a>Jenkins Java Client API本地调用环境</h2><p>Github开源代码地址：<a target="_blank" rel="noopener" href="https://github.com/jenkinsci/java-client-api">https://github.com/jenkinsci/java-client-api</a></p>
+<p>本地IDEA创建空的Maven工程，引入jenkins-client依赖, <a target="_blank" rel="noopener" href="https://search.maven.org/artifact/com.offbytwo.jenkins/jenkins-client/0.3.8/">https://search.maven.org/artifact/com.offbytwo.jenkins/jenkins-client/0.3.8/</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.offbytwo.jenkins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jenkins-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.3.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，maven 的setting.xml建议使用默认配置 <a href="settings.xml">setting.xml</a>，使用aliyun仓库可能会出现部分jar包拉不下来的情况 </p>
+</blockquote>
+<p>另一个jenkins rest api 也值得研究：<a target="_blank" rel="noopener" href="https://github.com/cdancy/jenkins-rest">https://github.com/cdancy/jenkins-rest</a> </p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac-%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">1.</span> <span class="toc-text">Mac 安装Jenkins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-CentOS%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">2.</span> <span class="toc-text">Linux CentOS安装Jenkins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jenkins-Java-Client-API%E6%9C%AC%E5%9C%B0%E8%B0%83%E7%94%A8%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">Jenkins Java Client API本地调用环境</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&text=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&is_video=false&description=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境&body=Check out this article: https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&title=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&name=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/10/devops/jenkins-install-in-mac-or-linux-and-client-env/&t=Mac和Linux安装和启动Jenkins并配置JavaClient调用环境"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2023
+    Bin Fu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fubinh521/fubinh521.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

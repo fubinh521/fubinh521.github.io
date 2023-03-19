@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="三次握手： 握手成功后在服务端开辟资源 四次挥手： 要确保服务端释放资源 资源包括哪些： 文件描述符，端口，内存等 网卡： ip地址，子网掩码，网关，DNS ip地址： 省市区（网络号） + 计算机门牌号 子网掩码 ： ip地址 &amp; 子网掩码 &#x3D; 得到省市区（网络号）信息 网关：下一跳的目标路由 route -n 路由表 ：下一跳机制，每个路由表只存储周边一步之内的数据 默认网关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用">
+<meta property="og:url" content="https://fubinh521.github.io/2023/02/25/network-note01-md/index.html">
+<meta property="og:site_name" content="bin&#96;s weblog">
+<meta property="og:description" content="三次握手： 握手成功后在服务端开辟资源 四次挥手： 要确保服务端释放资源 资源包括哪些： 文件描述符，端口，内存等 网卡： ip地址，子网掩码，网关，DNS ip地址： 省市区（网络号） + 计算机门牌号 子网掩码 ： ip地址 &amp; 子网掩码 &#x3D; 得到省市区（网络号）信息 网关：下一跳的目标路由 route -n 路由表 ：下一跳机制，每个路由表只存储周边一步之内的数据 默认网关">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-25T13:40:56.000Z">
+<meta property="article:modified_time" content="2023-03-19T12:58:55.119Z">
+<meta property="article:author" content="Bin Fu">
+<meta property="article:tag" content="network">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/02/25/algorithm/shuiwangshu/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/02/19/develop/mybatis-quickstart/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/25/network-note01-md/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&text=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&is_video=false&description=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用&body=Check out this article: https://fubinh521.github.io/2023/02/25/network-note01-md/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&name=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/25/network-note01-md/&t=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bin Fu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-25T13:40:56.000Z" itemprop="datePublished">2023-02-25</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/network/" rel="tag">network</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>三次握手： 握手成功后在服务端开辟资源</p>
+<p>四次挥手： 要确保服务端释放资源</p>
+<p>资源包括哪些： 文件描述符，端口，内存等</p>
+<p>网卡： ip地址，子网掩码，网关，DNS</p>
+<p>ip地址： 省市区（网络号） + 计算机门牌号</p>
+<p>子网掩码 ： ip地址 &amp; 子网掩码 &#x3D; 得到省市区（网络号）信息</p>
+<p>网关：下一跳的目标路由</p>
+<p>route -n 路由表 ：下一跳机制，每个路由表只存储周边一步之内的数据</p>
+<p>默认网关： destination是0.0.0.0， genmask是0.0.0.0 ， 与运算后就是默认网关。 </p>
+<p>网络工程师的工作是要规划骨干网络，哪些数据包走哪些网络。配置路由下一跳。</p>
+<p>gateway是0.0.0.0 ，表示不需要下一跳，网络是直连的。在局域网内</p>
+<p>完整通信定位： 端口号 + IP地址 + MAC物理地址</p>
+<p>四层负载均衡服务器： 不握手，只转发，数据包经过只看一下信息来决定转发到哪， 流量负载层<br>七层负载： 握手 ， 比如nginx，接入层</p>
+<p>NAT（Virtual Server via Network Address Translation）： 网络地址转换，一般记录在路由器的路由表上，基于三层<br>S-NAT ： 源地址替换<br>D-NAT ： 目标地址替换 ，用于四层负载均衡<br>弊端：带宽成为瓶颈， 请求带宽消耗远远小于 返回带宽消耗。 比如请求百度 ，返回一个很多内容的页面。<br>一个现象： 个人电脑发送东西带宽很慢，下载很快，运营商压榨了发送的带宽。</p>
+<p>DR（Virtual Server via Direct Routing）：基于2层的MAC地址欺骗，RS和负载要在同一局域网（距离就是下一跳，所以需要在同一交换机下）<br>隐藏VIP，对外隐藏，对内可见，对ARP协议进行修改<br>负载均衡器在链路层封装一层RIP的MAC地址。<br>用的最多</p>
+<p>TUN隧道技术（Virtual Server via IP Tunneling）：负载均衡服务器和Real Server不在同一机房。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/95736379">https://zhuanlan.zhihu.com/p/95736379</a></p>
+<p>LVS ： 四层负载均衡技术。  模块 ipvs </p>
+<p>vmware8 , vmware虚拟网卡 NAT。  windows下 vmware8-NAT软件</p>
+<p>ipvsadm 使用 和配置。 </p>
+<p>LVS服务那台机器是没有tcp连接的，netstat -natp 。 </p>
+<p>高可用问题解决： 1. LVS单点故障问题（lvs服务挂了）  2. RS应用服务某些节点挂掉无法自动下线问题（一部分用户使用异常）。 </p>
+<p>搭建： LVS主备实现。 </p>
+<p>使用keepalived ： 解决单点故障 ，监控服务是否可用。<br>nginx的HA高可用也可以用keepalived<br>配置：vrrp：虚拟路由冗余协议</p>
+<p>keepalived本身也是不可靠的，也会出现单点问题。  这就是一个组件为了解决另一个服务的可靠性问题，而引入了下一个不可靠问题，没完没了。</p>
+<p>所以需要借助zookeeper的强一致性来解决这个问题。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/25/network-note01-md/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&text=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&is_video=false&description=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用&body=Check out this article: https://fubinh521.github.io/2023/02/25/network-note01-md/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&title=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/25/network-note01-md/&name=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/25/network-note01-md/&t=网络模型, 负载均衡实现模式(NAT,DR,TUN),LVS四层负载,Keepalived实现高可用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2023
+    Bin Fu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fubinh521/fubinh521.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="SonarQube安装部署资源下载环境要求：https:&#x2F;&#x2F;docs.sonarqube.org&#x2F;8.9&#x2F;requirements&#x2F;requirements&#x2F;  sonarqube下载：https:&#x2F;&#x2F;www.sonarqube.org&#x2F;downloads&#x2F;  8.9.9 TLS长期支持版 安装sonarqube注意 安装文档：https:&#x2F;&#x2F;docs.sonarqube.org&#x2F;8.9&#x2F;setu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SonarQube安装部署">
+<meta property="og:url" content="https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/index.html">
+<meta property="og:site_name" content="bin&#96;s weblog">
+<meta property="og:description" content="SonarQube安装部署资源下载环境要求：https:&#x2F;&#x2F;docs.sonarqube.org&#x2F;8.9&#x2F;requirements&#x2F;requirements&#x2F;  sonarqube下载：https:&#x2F;&#x2F;www.sonarqube.org&#x2F;downloads&#x2F;  8.9.9 TLS长期支持版 安装sonarqube注意 安装文档：https:&#x2F;&#x2F;docs.sonarqube.org&#x2F;8.9&#x2F;setu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/sonar-chinese-plugin-install.png">
+<meta property="og:image" content="https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/sonar-extensions-dir-list.png">
+<meta property="og:image" content="https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/sonar-no-login-view-setting.png">
+<meta property="article:published_time" content="2023-02-05T09:55:03.000Z">
+<meta property="article:modified_time" content="2023-03-19T12:58:55.111Z">
+<meta property="article:author" content="Bin Fu">
+<meta property="article:tag" content="sonarqube">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/sonar-chinese-plugin-install.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>SonarQube安装部署</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/02/06/devops/bsdiff/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/02/04/devops/synology-gitea-deploy/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&text=SonarQube安装部署"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&is_video=false&description=SonarQube安装部署"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SonarQube安装部署&body=Check out this article: https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&name=SonarQube安装部署&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&t=SonarQube安装部署"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SonarQube%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="toc-number">1.</span> <span class="toc-text">SonarQube安装部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.1.</span> <span class="toc-text">资源下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85sonarqube%E6%B3%A8%E6%84%8F"><span class="toc-number">1.2.</span> <span class="toc-text">安装sonarqube注意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.</span> <span class="toc-text">插件安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E7%99%BB%E9%99%86%E8%83%BD%E6%9F%A5%E7%9C%8Bsonar%E6%89%AB%E6%8F%8F%E7%BB%93%E6%9E%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">未登陆能查看sonar扫描结果设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.5.</span> <span class="toc-text">操作步骤</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        SonarQube安装部署
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bin Fu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-05T09:55:03.000Z" itemprop="datePublished">2023-02-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E6%97%A5%E5%BF%97/">工作日志</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/sonarqube/" rel="tag">sonarqube</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="SonarQube安装部署"><a href="#SonarQube安装部署" class="headerlink" title="SonarQube安装部署"></a>SonarQube安装部署</h2><h3 id="资源下载"><a href="#资源下载" class="headerlink" title="资源下载"></a>资源下载</h3><p>环境要求：<a target="_blank" rel="noopener" href="https://docs.sonarqube.org/8.9/requirements/requirements/">https://docs.sonarqube.org/8.9/requirements/requirements/</a>  sonarqube下载：<a target="_blank" rel="noopener" href="https://www.sonarqube.org/downloads/">https://www.sonarqube.org/downloads/</a>  8.9.9 TLS长期支持版</p>
+<h3 id="安装sonarqube注意"><a href="#安装sonarqube注意" class="headerlink" title="安装sonarqube注意"></a>安装sonarqube注意</h3><ol>
+<li><p>安装文档：<a target="_blank" rel="noopener" href="https://docs.sonarqube.org/8.9/setup/install-server/">https://docs.sonarqube.org/8.9/setup/install-server/</a></p>
+</li>
+<li><p>支持指定jdk，必须不低于jdk11 wapper.properties</p>
+<p>wrapper.java.command&#x3D;&#x2F;home&#x2F;sonar&#x2F;jdk-11.0.12&#x2F;bin&#x2F;java</p>
+</li>
+<li><p>支持修改ip，端口，和context路径</p>
+</li>
+<li><p>配置文件中指定数据库信息</p>
+<p>sonar.jdbc.username&#x3D;sona sonar.jdbc.password&#x3D;mypassword  sonar.jdbc.url&#x3D;jdbc:postgresql:&#x2F;&#x2F;10.172.42.69:5432&#x2F;sonarqube</p>
+</li>
+<li><p>默认访问路径 localhost:9000</p>
+</li>
+<li><p>linux系统参数修改，root权限执行：<a target="_blank" rel="noopener" href="https://docs.sonarqube.org/8.9/requirements/requirements/">https://docs.sonarqube.org/8.9/requirements/requirements/</a></p>
+</li>
+</ol>
+<h3 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h3><p>中文插件安装</p>
+<img src="/2023/02/05/devops/sonarqube-install-deploy/sonar-chinese-plugin-install.png" class="">
+
+<p>插件离线安装</p>
+<p>自带插件安装目录sonarqube-8.9.9.56886&#x2F;lib&#x2F;extensions ， 都是以jar包的形式组织起来；</p>
+<img src="/2023/02/05/devops/sonarqube-install-deploy/sonar-extensions-dir-list.png" class="">
+
+<p>swift 插件 ： <a target="_blank" rel="noopener" href="https://github.com/sonar-next/sonar-swift/releases">https://github.com/sonar-next/sonar-swift/releases</a> 版本1.6.1</p>
+<p>中文插件： <a target="_blank" rel="noopener" href="https://github.com/xuhuisheng/sonar-l10n-zh/releases">https://github.com/xuhuisheng/sonar-l10n-zh/releases</a> 版本8.9</p>
+<h3 id="未登陆能查看sonar扫描结果设置"><a href="#未登陆能查看sonar扫描结果设置" class="headerlink" title="未登陆能查看sonar扫描结果设置"></a>未登陆能查看sonar扫描结果设置</h3><img src="/2023/02/05/devops/sonarqube-install-deploy/sonar-no-login-view-setting.png" class="">
+
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">SonarQube安装步骤：</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># linux系统设置 root用户依次执行</span></span></span><br><span class="line">sysctl -w vm.max_map_count=524288</span><br><span class="line">sysctl -w fs.file-max=131072</span><br><span class="line">ulimit -n 131072</span><br><span class="line">ulimit -u 8192</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 重要！！！ 创建sonar用户，root用户无法启动sonar服务，后续操作都需要用sonar用户进行</span></span></span><br><span class="line">2.1  useradd  sonar </span><br><span class="line">2.2  cd /home/sonar </span><br><span class="line">2.3  su sonar  切换用户</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 拷贝压缩包到/home/sonar目录</span></span></span><br><span class="line">3.1  jdk压缩包  tar -zxvf jdk-11.0.12_linux-x64_bin.tar.gz</span><br><span class="line">3.2  sonarqube压缩包  tar -zxvf sonarqube-8.9.9.56886.tar.gz</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 拷贝配置覆盖sonarqube原有两个配置文件，sonar.properties 和 wrapper.conf ,文件记录数据库连接信息，jdk路径等</span></span></span><br><span class="line">4.1 /home/sonar/sonarqube-8.9.9.56886/conf/sonar.properties</span><br><span class="line">4.2 /home/sonar/sonarqube-8.9.9.56886/conf/wrapper.conf</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 中文插件和swift插件放入指定目录 ： 插件名 sonar-l10n-zh-plugin-8.9.jar , sonar-swift-plugin-1.6.1.jar</span></span></span><br><span class="line">5.1  cd /home/sonar/sonarqube-8.9.9.56886/extensions/plugins</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  启动sonarqube</span></span></span><br><span class="line">6.1   cd /home/sonar/sonarqube-8.9.9.56886/bin/linux-x86-64</span><br><span class="line">6.2   ./sonar.sh start</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 命令行验证sonarqube是否启动成功，有返回说明成功</span></span></span><br><span class="line">7 curl http://localhost:9000</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">备注: 如果启动失败，查看启动日志排查：</span><br><span class="line">cd  /home/sonar/sonarqube-8.9.9.56886/logs</span><br><span class="line">tail -100f sonar-日期.log</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SonarQube%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="toc-number">1.</span> <span class="toc-text">SonarQube安装部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.1.</span> <span class="toc-text">资源下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85sonarqube%E6%B3%A8%E6%84%8F"><span class="toc-number">1.2.</span> <span class="toc-text">安装sonarqube注意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.</span> <span class="toc-text">插件安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E7%99%BB%E9%99%86%E8%83%BD%E6%9F%A5%E7%9C%8Bsonar%E6%89%AB%E6%8F%8F%E7%BB%93%E6%9E%9C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">未登陆能查看sonar扫描结果设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.5.</span> <span class="toc-text">操作步骤</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&text=SonarQube安装部署"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&is_video=false&description=SonarQube安装部署"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SonarQube安装部署&body=Check out this article: https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&title=SonarQube安装部署"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&name=SonarQube安装部署&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/05/devops/sonarqube-install-deploy/&t=SonarQube安装部署"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2023
+    Bin Fu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fubinh521/fubinh521.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

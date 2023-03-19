@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="异或运算 ^  ： 两个数按每个二进制位合并，相同为0，不同为1.    它有一些很神奇的性质：   0 ^ N &#x3D; N N ^ N &#x3D; 0 满足交换律和结合律  a ^ b &#x3D; b ^ a ,  (a ^ b) ^ c &#x3D; a ^(b ^ c)  &#x3D; 结果是一个固定的数   其实就是无进位相加  如何不用额外变量交换两个数123456789&#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="位运算&#x2F;异或运算及其演变题目">
+<meta property="og:url" content="https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/index.html">
+<meta property="og:site_name" content="bin&#96;s weblog">
+<meta property="og:description" content="异或运算 ^  ： 两个数按每个二进制位合并，相同为0，不同为1.    它有一些很神奇的性质：   0 ^ N &#x3D; N N ^ N &#x3D; 0 满足交换律和结合律  a ^ b &#x3D; b ^ a ,  (a ^ b) ^ c &#x3D; a ^(b ^ c)  &#x3D; 结果是一个固定的数   其实就是无进位相加  如何不用额外变量交换两个数123456789&#x2F;&#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-15T21:57:17.000Z">
+<meta property="article:modified_time" content="2023-03-19T12:58:55.091Z">
+<meta property="article:author" content="Bin Fu">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>位运算/异或运算及其演变题目</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/02/19/develop/mybatis-quickstart/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/02/14/algorithm/algorithm-bit-print-binrary/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&text=位运算/异或运算及其演变题目"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&is_video=false&description=位运算/异或运算及其演变题目"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=位运算/异或运算及其演变题目&body=Check out this article: https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&name=位运算/异或运算及其演变题目&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&t=位运算/异或运算及其演变题目"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%B8%8D%E7%94%A8%E9%A2%9D%E5%A4%96%E5%8F%98%E9%87%8F%E4%BA%A4%E6%8D%A2%E4%B8%A4%E4%B8%AA%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">如何不用额外变量交换两个数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E6%9C%89%E4%B8%80%E7%A7%8D%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86%E5%A5%87%E6%95%B0%E6%AC%A1%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E9%83%BD%E6%98%AF%E5%81%B6%E6%95%B0%E6%AC%A1%EF%BC%8C%E6%80%8E%E4%B9%88%E6%89%93%E5%8D%B0%E8%BF%99%E4%B8%AA%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">一个数组有一种数出现了奇数次，其他数都是偶数次，怎么打印这个数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E6%8A%80%E5%B7%A7-%E6%80%8E%E4%B9%88%E6%8A%8A%E4%B8%80%E4%B8%AAint%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%95%B0%E6%8F%90%E5%8F%96%E5%87%BA%E6%9C%80%E5%8F%B3%E4%BE%A7%E7%9A%841%E6%9D%A5"><span class="toc-number">3.</span> <span class="toc-text">小技巧: 怎么把一个int类型的数提取出最右侧的1来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9C%89%E4%B8%A4%E7%A7%8D%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86%E5%A5%87%E6%95%B0%E6%AC%A1%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86%E5%81%B6%E6%95%B0%E6%AC%A1%EF%BC%8C%E6%80%8E%E4%B9%88%E6%89%BE%E5%88%B0%E5%B9%B6%E6%89%93%E5%8D%B0%E8%BF%99%E4%B8%A4%E7%A7%8D%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">一个数组中有两种数出现了奇数次，其他数出现了偶数次，怎么找到并打印这两种数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9C%89%E4%B8%80%E7%A7%8D%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86K%E6%AC%A1%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86M%E6%AC%A1%EF%BC%8CM-gt-1-%EF%BC%8CK-lt-M-%EF%BC%8C%E6%89%BE%E6%89%93%E5%87%BA%E7%8E%B0K%E6%AC%A1%E7%9A%84%E6%95%B0%E3%80%82"><span class="toc-number">5.</span> <span class="toc-text">一个数组中有一种数出现了K次，其他数出现了M次，M &gt; 1 ，K &lt; M ，找打出现K次的数。</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        位运算/异或运算及其演变题目
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bin Fu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-15T21:57:17.000Z" itemprop="datePublished">2023-02-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/algorithm/" rel="tag">algorithm</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>异或运算 ^  ： 两个数按每个二进制位合并，相同为0，不同为1.  </p>
+</blockquote>
+<p>它有一些很神奇的性质： </p>
+<ol>
+<li>0 ^ N &#x3D; N</li>
+<li>N ^ N &#x3D; 0</li>
+<li>满足交换律和结合律  a ^ b &#x3D; b ^ a ,  (a ^ b) ^ c &#x3D; a ^(b ^ c)  &#x3D; 结果是一个固定的数</li>
+</ol>
+<blockquote>
+<p>其实就是无进位相加</p>
+</blockquote>
+<h2 id="如何不用额外变量交换两个数"><a href="#如何不用额外变量交换两个数" class="headerlink" title="如何不用额外变量交换两个数"></a>如何不用额外变量交换两个数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 常规做法</span></span><br><span class="line"><span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> a;</span><br><span class="line">a = b;</span><br><span class="line">b = temp</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 异或</span></span><br><span class="line">a = a ^ b  <span class="comment">// a = a^b  b=b</span></span><br><span class="line">b = a ^ b  <span class="comment">// b = a ^ b ^ b = a</span></span><br><span class="line">a = a ^ b  <span class="comment">// a = a ^ b ^ a = b</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意： a 和 b变量必须是独立的内存区域，不然计算会出错。</p>
+</blockquote>
+<h2 id="一个数组有一种数出现了奇数次，其他数都是偶数次，怎么打印这个数"><a href="#一个数组有一种数出现了奇数次，其他数都是偶数次，怎么打印这个数" class="headerlink" title="一个数组有一种数出现了奇数次，其他数都是偶数次，怎么打印这个数"></a>一个数组有一种数出现了奇数次，其他数都是偶数次，怎么打印这个数</h2><p>[ a, b, a,c,c,d,d,d,d]  两个相同的数异或 &#x3D; 0。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; i &lt; arr.length - <span class="number">1</span> ; i++) &#123;</span><br><span class="line">    result ^= arr[i]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> result;</span><br></pre></td></tr></table></figure>
+
+<h2 id="小技巧-怎么把一个int类型的数提取出最右侧的1来"><a href="#小技巧-怎么把一个int类型的数提取出最右侧的1来" class="headerlink" title="小技巧: 怎么把一个int类型的数提取出最右侧的1来"></a>小技巧: 怎么把一个int类型的数提取出最右侧的1来</h2><p>比如 ： 0011011010101100 ， 得到结果0000000000000100</p>
+<blockquote>
+<p>a &amp; (-a)    , -a &#x3D; ~a + 1 , a取反加1就是负a</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a      = <span class="number">01101110010000</span></span><br><span class="line">~a     = <span class="number">10010001101111</span></span><br><span class="line">~a + <span class="number">1</span> = <span class="number">10010001110000</span></span><br><span class="line">------------------------</span><br><span class="line">         <span class="number">00000000010000</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="一个数组中有两种数出现了奇数次，其他数出现了偶数次，怎么找到并打印这两种数"><a href="#一个数组中有两种数出现了奇数次，其他数出现了偶数次，怎么找到并打印这两种数" class="headerlink" title="一个数组中有两种数出现了奇数次，其他数出现了偶数次，怎么找到并打印这两种数"></a>一个数组中有两种数出现了奇数次，其他数出现了偶数次，怎么找到并打印这两种数</h2><blockquote>
+<p>解题思路分析</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设一个数组arr[]： a和b出现了奇数次</span></span><br><span class="line">a ^ b ^ ..... 异或所有 = a ^ b = eor</span><br><span class="line">由于a != b , 所以a ^ b != <span class="number">0</span></span><br><span class="line">eor结果某个位置上一定为<span class="number">1</span> . 比如找eor最右侧的<span class="number">1</span> .  </span><br><span class="line">    </span><br><span class="line"><span class="comment">//假设从右开始第三位为1，说明a的第三位和b的第三位一定不同</span></span><br><span class="line">可以把arr[]所有的数分成两类，第一类是第三位是<span class="number">1</span>的数，另一类是第三位是<span class="number">0</span>的数</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 假设 a的第三位是1，b的第三位是0</span></span><br><span class="line">eor` = 第三位是<span class="number">1</span>的所有数异或 得到 a , 因为其他不是a的数一定会出现偶数次</span><br><span class="line">b = eor ^ eor` = (a ^ b) ^ a  = b</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>代码实现</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// arr中，有两种数，出现奇数次</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printOddTimesNum2</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">eor</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">		eor ^= arr[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// a 和 b是两种数</span></span><br><span class="line">	<span class="comment">// eor != 0</span></span><br><span class="line">	<span class="comment">// eor最右侧的1，提取出来</span></span><br><span class="line">	<span class="comment">// eor :     00110010110111000</span></span><br><span class="line">	<span class="comment">// rightOne :00000000000001000</span></span><br><span class="line">	<span class="type">int</span> <span class="variable">rightOne</span> <span class="operator">=</span> eor &amp; (-eor); <span class="comment">// 提取出最右的1</span></span><br><span class="line">	</span><br><span class="line">	<span class="type">int</span> <span class="variable">onlyOne</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// eor&#x27;</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; i &lt; arr.length;i++) &#123;</span><br><span class="line">		<span class="comment">//  arr[1] =  111100011110000</span></span><br><span class="line">		<span class="comment">// rightOne=  000000000010000</span></span><br><span class="line">		<span class="keyword">if</span> ((arr[i] &amp; rightOne) != <span class="number">0</span>) &#123;</span><br><span class="line">			onlyOne ^= arr[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	System.out.println(onlyOne + <span class="string">&quot; &quot;</span> + (eor ^ onlyOne));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="一个数组中有一种数出现了K次，其他数出现了M次，M-gt-1-，K-lt-M-，找打出现K次的数。"><a href="#一个数组中有一种数出现了K次，其他数出现了M次，M-gt-1-，K-lt-M-，找打出现K次的数。" class="headerlink" title="一个数组中有一种数出现了K次，其他数出现了M次，M &gt; 1 ，K &lt; M ，找打出现K次的数。"></a>一个数组中有一种数出现了K次，其他数出现了M次，M &gt; 1 ，K &lt; M ，找打出现K次的数。</h2>
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%B8%8D%E7%94%A8%E9%A2%9D%E5%A4%96%E5%8F%98%E9%87%8F%E4%BA%A4%E6%8D%A2%E4%B8%A4%E4%B8%AA%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">如何不用额外变量交换两个数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E6%9C%89%E4%B8%80%E7%A7%8D%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86%E5%A5%87%E6%95%B0%E6%AC%A1%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E9%83%BD%E6%98%AF%E5%81%B6%E6%95%B0%E6%AC%A1%EF%BC%8C%E6%80%8E%E4%B9%88%E6%89%93%E5%8D%B0%E8%BF%99%E4%B8%AA%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">一个数组有一种数出现了奇数次，其他数都是偶数次，怎么打印这个数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E6%8A%80%E5%B7%A7-%E6%80%8E%E4%B9%88%E6%8A%8A%E4%B8%80%E4%B8%AAint%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%95%B0%E6%8F%90%E5%8F%96%E5%87%BA%E6%9C%80%E5%8F%B3%E4%BE%A7%E7%9A%841%E6%9D%A5"><span class="toc-number">3.</span> <span class="toc-text">小技巧: 怎么把一个int类型的数提取出最右侧的1来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9C%89%E4%B8%A4%E7%A7%8D%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86%E5%A5%87%E6%95%B0%E6%AC%A1%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86%E5%81%B6%E6%95%B0%E6%AC%A1%EF%BC%8C%E6%80%8E%E4%B9%88%E6%89%BE%E5%88%B0%E5%B9%B6%E6%89%93%E5%8D%B0%E8%BF%99%E4%B8%A4%E7%A7%8D%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">一个数组中有两种数出现了奇数次，其他数出现了偶数次，怎么找到并打印这两种数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9C%89%E4%B8%80%E7%A7%8D%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86K%E6%AC%A1%EF%BC%8C%E5%85%B6%E4%BB%96%E6%95%B0%E5%87%BA%E7%8E%B0%E4%BA%86M%E6%AC%A1%EF%BC%8CM-gt-1-%EF%BC%8CK-lt-M-%EF%BC%8C%E6%89%BE%E6%89%93%E5%87%BA%E7%8E%B0K%E6%AC%A1%E7%9A%84%E6%95%B0%E3%80%82"><span class="toc-number">5.</span> <span class="toc-text">一个数组中有一种数出现了K次，其他数出现了M次，M &gt; 1 ，K &lt; M ，找打出现K次的数。</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&text=位运算/异或运算及其演变题目"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&is_video=false&description=位运算/异或运算及其演变题目"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=位运算/异或运算及其演变题目&body=Check out this article: https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&title=位运算/异或运算及其演变题目"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&name=位运算/异或运算及其演变题目&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/15/algorithm/algorithm-bit-yihuoyunsuan/&t=位运算/异或运算及其演变题目"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2023
+    Bin Fu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fubinh521/fubinh521.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

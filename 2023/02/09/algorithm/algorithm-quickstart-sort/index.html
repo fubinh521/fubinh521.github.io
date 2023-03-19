@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="选择排序思考过程给定一个数组,[0,1,…..n-1]  n个数选一个最小值，放在0位置 n-1个数选一个n-1个数中的最小值，放在1位置……直到整个数组有序。  代码实现12345678910111213141516171819public class Sort01_SelectSort &amp;#123;    public static void SelectSort(int[] arr)&amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法&#x2F;选择,插入,冒泡，归并和快速排序">
+<meta property="og:url" content="https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/index.html">
+<meta property="og:site_name" content="bin&#96;s weblog">
+<meta property="og:description" content="选择排序思考过程给定一个数组,[0,1,…..n-1]  n个数选一个最小值，放在0位置 n-1个数选一个n-1个数中的最小值，放在1位置……直到整个数组有序。  代码实现12345678910111213141516171819public class Sort01_SelectSort &amp;#123;    public static void SelectSort(int[] arr)&amp;#12">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-09T10:07:29.000Z">
+<meta property="article:modified_time" content="2023-03-19T12:58:55.091Z">
+<meta property="article:author" content="Bin Fu">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>排序算法/选择,插入,冒泡，归并和快速排序</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/02/09/algorithm/algorithm-random-generate-for-test/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/02/09/linux/centos7-network-config-in-win-vmware/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&text=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&is_video=false&description=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=排序算法/选择,插入,冒泡，归并和快速排序&body=Check out this article: https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&name=排序算法/选择,插入,冒泡，归并和快速排序&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&t=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">选择排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">思考过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">时间复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">冒泡排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E8%BF%87%E7%A8%8B-1"><span class="toc-number">2.1.</span> <span class="toc-text">思考过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.2.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-1"><span class="toc-number">2.3.</span> <span class="toc-text">时间复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">插入排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">4.</span> <span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">4.1.</span> <span class="toc-text">递归实现思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">4.2.</span> <span class="toc-text">非递归实现思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">4.3.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">快速排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#D-amp-C-%E6%80%9D%E6%83%B3"><span class="toc-number">5.1.</span> <span class="toc-text">D &amp; C 思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8D%B7%E5%85%B0%E5%9B%BD%E6%97%97%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">荷兰国旗问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%9C%BA%E6%99%AF"><span class="toc-number">5.3.</span> <span class="toc-text">简单场景:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E5%9C%BA%E6%99%AF"><span class="toc-number">5.4.</span> <span class="toc-text">进阶场景:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E6%8E%92%E7%9A%84%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.5.</span> <span class="toc-text">快排的递归实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%80%92%E5%BD%92%E7%89%88%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="toc-number">5.6.</span> <span class="toc-text">非递归版本思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-3"><span class="toc-number">5.7.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        排序算法/选择,插入,冒泡，归并和快速排序
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bin Fu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-09T10:07:29.000Z" itemprop="datePublished">2023-02-09</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/algorithm/" rel="tag">algorithm</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h1><h2 id="思考过程"><a href="#思考过程" class="headerlink" title="思考过程"></a>思考过程</h2><p>给定一个数组,[0,1,…..n-1]</p>
+<ol>
+<li>n个数选一个最小值，放在0位置</li>
+<li>n-1个数选一个n-1个数中的最小值，放在1位置<br>……<br>直到整个数组有序。</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sort01_SelectSort</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">SelectSort</span><span class="params">(<span class="type">int</span>[] arr)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">minValueIndex</span> <span class="operator">=</span> <span class="number">0</span>; minValueIndex &lt; arr.length;minValueIndex++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> minValueIndex + <span class="number">1</span> ; j &lt; arr.length ; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[minValueIndex] &gt; arr[j]) &#123;</span><br><span class="line">                    swap(arr,minValueIndex,j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = arr[j];</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="时间复杂度分析"><a href="#时间复杂度分析" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><p>每遍历一轮，找到最大或者最小值的下标，和第一个数交换，结束一轮运算，乱序数组减一，周而复始，直到整个数组有序。<br>分析一下数组选择排序时间复杂度：<br>第一次遍历：N*(取数+比较) + 1次交换<br>… (N-1)(取数+比较) + 1次交换<br>..<br>.<br>&#x3D; 2 * （N + (N-1) + … + 1） + N<br>&#x3D; 2*(aN^2 + bN + c) +N<br>&#x3D; 2aN^2 + (2b+1)N + 2c<br>&#x3D; aN^2 + bN + c<br>&#x3D; N^2<br>忽略低阶项和常数得到时间复杂度<br>&#x3D;&#x3D;&#x3D;&gt; O(n^2)<br>时间复杂度的意义： a算法：3_N^3 + 2_N^2 + 1 b算法：100w_N^2 + 500w_N + 1000w 当N→无穷大时，常数项就可以忽略，复杂度只与数据量有关。</p>
+<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><h2 id="思考过程-1"><a href="#思考过程-1" class="headerlink" title="思考过程"></a>思考过程</h2><ol>
+<li>n个数相邻两两比较，最大值冒泡到最右边</li>
+<li>n-1个数相邻两两比较，最大值冒泡到n-1个数的最右边<br>……<br>直到整个数组有序</li>
+</ol>
+<h2 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sort02_BubbleSort</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">BubbleSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">end</span> <span class="operator">=</span> arr.length -<span class="number">1</span> ; end &gt; <span class="number">0</span>; end--) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; end  ; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[j] &gt; arr[j+<span class="number">1</span>]) &#123;</span><br><span class="line">                    swap(arr,j,j+<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = arr[j];</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="时间复杂度分析-1"><a href="#时间复杂度分析-1" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><p>每遍历一轮，相邻的两个数比较交换，谁大谁在后面，直到找到最大或最小值，结束一轮运算，乱序数组减一，周而复始，直到整个数组有序。<br>分析：<br>第一次遍历 ： (N-1)*(比较+交换)<br>…<br>..<br>.<br>冒泡排序和选择排序对所有不同情况的数据样本，复杂度的表现都是一样的，O(N^2).</p>
+<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p> 一个数组，先让0-0范围有序，再让0-1范围内有序，周而复始，直到整个数组有序。 先局部有序，再逐一插入单个数。，类比打牌，把牌一个一个插入到前面有序的牌中。  </p>
+<ol>
+<li>指针停在0位置，[0]有序 </li>
+<li>指针停在1位置, 与前面的数依次比较，小的放前面，直到[0,1]有序 </li>
+<li>指针停在2位置, 与前面的数依次比较，小的放前面,指针左移一位，直到[0,1,2]有序 …… 直到整个数组有序</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sort03_InsertSort</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">insertSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">end</span> <span class="operator">=</span> <span class="number">1</span>; end &lt; arr.length; end++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">maxIndex</span> <span class="operator">=</span> end;</span><br><span class="line">            <span class="keyword">while</span> (maxIndex - <span class="number">1</span>  &gt;= <span class="number">0</span> &amp;&amp; arr[maxIndex -<span class="number">1</span>] &gt; arr[maxIndex]) &#123;</span><br><span class="line">                swap(arr,maxIndex - <span class="number">1</span>, maxIndex);</span><br><span class="line">                maxIndex--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//优化版本</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">insertSort2</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">end</span> <span class="operator">=</span> <span class="number">1</span>; end &lt; arr.length; end++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">pre</span> <span class="operator">=</span> end - <span class="number">1</span>; pre &gt;= <span class="number">0</span> &amp;&amp; arr[pre] &gt; arr[pre + <span class="number">1</span>]; pre--) &#123;</span><br><span class="line">                swap(arr, pre, pre + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = arr[j];</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><p>建立的归并操作的基础上，稳定的排序算法，时间复杂度O(nlogn) . 先将每个子序列有序，再使子序列段间有序，最后合成一个有序序列。 又叫做二路归并。<br>*</p>
+<h2 id="递归实现思路"><a href="#递归实现思路" class="headerlink" title="递归实现思路"></a>递归实现思路</h2><p>思考过程：</p>
+<ol>
+<li>保证左边数组有序</li>
+<li>保证右边数组有序</li>
+<li>合并左右两边数组使整个数组有序。</li>
+</ol>
+<ul>
+<li>3.1 需要一个辅助数组来保存比较后的数</li>
+</ul>
+<h2 id="非递归实现思路"><a href="#非递归实现思路" class="headerlink" title="非递归实现思路"></a>非递归实现思路</h2><p>相比递归实现，非递归使用变化的步长(step)来代表拆分的子序列;</p>
+<ol>
+<li>步长为1时： [1][2][4][3][5][0] 交替 ，每个序列中只有一个数</li>
+<li>步长为2时： [12][34][05] 交替 ， 第1步时的左右序列已合并变有序， 每个序列中有两个数</li>
+<li>步长为4时： [1234][05] ，第2步时的左右序列已合并变为左序列且有序.</li>
+<li>步长为8，超过数组本身长度，直接合并为一个序列，排序完毕。</li>
+</ol>
+<p>时间复杂度估算： 步长逼近N，需要O(logN)次，每一次所有数需要合并一次，所以是O(n) &#x3D;&#x3D;&gt; 所以复杂度为O(nlogn)</p>
+<h2 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sort04_MergeSort</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 归并排序递归实现</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">mergeSortByRecursive</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line">        process(arr,<span class="number">0</span>,arr.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保证输入数组有序</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(<span class="type">int</span>[] arr,<span class="type">int</span> L , <span class="type">int</span> R)</span> &#123;</span><br><span class="line">        <span class="comment">//基线条件：: 只有一个元素时，结束</span></span><br><span class="line">        <span class="keyword">if</span> (L == R) <span class="keyword">return</span>;</span><br><span class="line">        <span class="comment">// 中间位置</span></span><br><span class="line">        <span class="comment">// int mid = (L + R) / 2 ，这种计算方法可能导致 L+ R超出整数范围</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> L + ((R - L) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//让左边数组全部有序</span></span><br><span class="line">        process(arr, L , mid);</span><br><span class="line">        <span class="comment">//让右边数组全部有序</span></span><br><span class="line">        process(arr, mid + <span class="number">1</span>, R);</span><br><span class="line">        <span class="comment">//合并左边和右边数组</span></span><br><span class="line">        merge(arr,L,mid,R);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 合并左组和右组</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">merge</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> L, <span class="type">int</span> M, <span class="type">int</span> R)</span> &#123;</span><br><span class="line">        <span class="comment">// 申请一个辅助数组合并左组和右组</span></span><br><span class="line">        <span class="type">int</span>[] help = <span class="keyword">new</span> <span class="title class_">int</span>[R - L + <span class="number">1</span>];</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">p1</span> <span class="operator">=</span> L;</span><br><span class="line">        <span class="type">int</span> <span class="variable">p2</span> <span class="operator">=</span> M + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (p1 &lt;= M &amp;&amp; p2 &lt;= R) &#123;</span><br><span class="line">            help[i++] = arr[p1] &lt;= arr[p2] ? arr[p1++] : arr[p2++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//要么p1越界，要么p2越界，不可能出现同时越界</span></span><br><span class="line">        <span class="keyword">while</span> (p1 &lt;= M) &#123;</span><br><span class="line">            help[i++] = arr[p1++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (p2 &lt;= R) &#123;</span><br><span class="line">            help[i++] = arr[p2++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//合并数据回填</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; help.length; j++) &#123;</span><br><span class="line">            arr[L + i] = help[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 归并排序非递归实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">mergeSortNotRecursive</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//初始步长为1</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">step</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> arr.length;</span><br><span class="line">        <span class="keyword">while</span> (step &lt; N) &#123;</span><br><span class="line">            <span class="comment">// -- 调整步长 -- start</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">L</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (L &lt; N) &#123;</span><br><span class="line">                <span class="comment">//计算中点位置</span></span><br><span class="line">                <span class="type">int</span> <span class="variable">M</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (N - L &gt;= step) &#123;</span><br><span class="line">                    M = L + step - <span class="number">1</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">//只剩下左组的边界情况</span></span><br><span class="line">                    M = N - <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// M到了N-1，说明没有右组</span></span><br><span class="line">                <span class="keyword">if</span> (M == N - <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">int</span> <span class="variable">R</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">                <span class="comment">//算右组的个数 (N-1)-(M+1) + 1 = N-1-M</span></span><br><span class="line">                <span class="keyword">if</span> (N - <span class="number">1</span> - M &gt;= step) &#123;</span><br><span class="line">                    <span class="comment">// R能来到step位置</span></span><br><span class="line">                    R = M + step;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 凑不够右组</span></span><br><span class="line">                    R = N - <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// M，R都算出来，合并左组和右组,算法和递归合并排序一致</span></span><br><span class="line">                merge(arr, L, M, R);</span><br><span class="line">                <span class="comment">//有可能 R+1越界</span></span><br><span class="line">                <span class="keyword">if</span> (R == N - <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 下一个左组的位置</span></span><br><span class="line">                    L = R + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// -- 调整步长 -- end</span></span><br><span class="line">            <span class="comment">//边界考虑：步长超过数组本身长度，排序结束。防止step * 2 超过整数最大值</span></span><br><span class="line">            <span class="comment">// 为什么 step &gt;= N/2 不行， 因为n/2 是向下取整的。</span></span><br><span class="line">            <span class="comment">// 比如17个数，步长为8的时候，17/2 = 8 ,直接停了。</span></span><br><span class="line">            <span class="keyword">if</span> (step &gt; N / <span class="number">2</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//增加步长*2</span></span><br><span class="line">            step *= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="D-amp-C-思想"><a href="#D-amp-C-思想" class="headerlink" title="D &amp; C 思想"></a>D &amp; C 思想</h2><ol>
+<li>基线条件：最简单的数组： 空数组或只有一个元素的数组，不需要排序直接返回。</li>
+<li>缩小问题规模：选择基准值，把整个数组分解 [小于基准值 , 基准值, 大于基准值]</li>
+</ol>
+<h2 id="荷兰国旗问题"><a href="#荷兰国旗问题" class="headerlink" title="荷兰国旗问题"></a>荷兰国旗问题</h2><p>现在有若干个红、白、蓝三种颜色的球随机排列成一条直线。现在我们的任务是把这些球按照红、白、蓝排序。<br>红 &#x3D; 0 ，白 &#x3D; 1 ，蓝 &#x3D; 2<br>[0,1,2,1,0,2,1,0,2,1] &#x3D;&gt; 变成 [0,0,0,1,1,1,1,2,2,2]</p>
+<h2 id="简单场景"><a href="#简单场景" class="headerlink" title="简单场景:"></a>简单场景:</h2><p>一个数组[x,x,x,p], 小于等于p的放左边,大于p的放右边</p>
+<p>数组分为[Less区,待排序区,P], 初始化时,Less区大小为0, 指针从左往右移动,指向的数为当前数</p>
+<ol>
+<li>当前数 &lt;&#x3D; p(基准值),当前数和Less区外的下一个数做交换,Less区右扩,当前数跳下一个,越界了停止。</li>
+<li>当前数 &gt; P(基准值),当前数直接跳下一个,越界了停止。</li>
+</ol>
+<h2 id="进阶场景"><a href="#进阶场景" class="headerlink" title="进阶场景:"></a>进阶场景:</h2><p>一个数组[x,x,x,x,x,p],小于p的放左边,等于p的放中间,大于p的放右边。<br>数组要分为三个区域,[Less区,待排序区,(More区,p)].</p>
+<ol>
+<li>当前数&lt; 基准值, 当前数与Less区的下个数做交换,Less区右扩, 当前数跳下一个。</li>
+<li>当前数&gt; 基准值, 当前区与More区的前一个数做交换,More区向左扩,当前数不动(交换过还没看)。</li>
+<li>当前数 &#x3D; 基准值，直接跳下一个。</li>
+<li>最后,基准值和More区的第一个数换,排序结束</li>
+</ol>
+<h2 id="快排的递归实现"><a href="#快排的递归实现" class="headerlink" title="快排的递归实现"></a>快排的递归实现</h2><p>快排最小问题规模等价于荷兰国旗问题：一串数字,选一个数为基准值，把小于基准值的数放在它的左边，大于基准值的数放在它的右边。 要求时间复杂度为O(n)，并且只能使用有限几个变量<br>a. 先按单个数分层,返回单个数的左右边界.<br>b. 递归函数</p>
+<h2 id="非递归版本思路"><a href="#非递归版本思路" class="headerlink" title="非递归版本思路"></a>非递归版本思路</h2><p>用Stack栈做任务,每一个最小任务就是一个荷兰国旗问题,还是使用partition方法来实现分层。</p>
+<h2 id="代码实现-3"><a href="#代码实现-3" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Stack;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sort05_QuickSort</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 1. 实现场景: 一个数组[x,x,x,p], 小于等于p的放左边,大于p的放右边</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">//方法效果:拿数组的最右一个数做基准值, 结果返回&lt;=该数放左边,&gt;=该数放右边。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">splitNum01</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="comment">//Less区的右边界</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">lessEqualR</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//当前指针下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//最右值</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">mostR</span> <span class="operator">=</span> arr.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(index &lt; arr.length) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[index] &lt;= arr[mostR])&#123;</span><br><span class="line">                <span class="comment">//交换两个值</span></span><br><span class="line">                swap(arr,lessEqualR + <span class="number">1</span> , index);</span><br><span class="line">                lessEqualR++;</span><br><span class="line">                index++;</span><br><span class="line">                <span class="comment">//上三句可简写成一句</span></span><br><span class="line">                <span class="comment">//swap(arr,++lessEqualR,index++);</span></span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                index++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *2.进阶场景: 一个数组[x,x,x,x,x,p],小于p的放左边,等于p的放中间,大于p的放右边。</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">splitNum02</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="comment">//Less区的右边界</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">lessR</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//more区的左边界</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">moreL</span> <span class="operator">=</span> arr.length - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//当前指针下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//划分值下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">poivt</span> <span class="operator">=</span> arr.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(index &lt; moreL) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[index] &lt; arr[poivt])&#123;</span><br><span class="line">                swap(arr,++lessR,index++);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>  (arr[index] &gt; arr[poivt])&#123;</span><br><span class="line">                swap(arr,--moreL,index);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                index++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 第4步</span></span><br><span class="line">        swap(arr,moreL,poivt);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 3. 快速排序递归实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 先按单个数分层,返回单个数的左右边界.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> L</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> R</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">//拿单个数来分层, 在arr[L...R]范围上,拿arr[R]做划分值</span></span><br><span class="line">    <span class="comment">//返回等于arr[R]区域的左右边界</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span>[] partition(<span class="type">int</span>[] arr,<span class="type">int</span> L,<span class="type">int</span> R) &#123;</span><br><span class="line">        <span class="comment">//Less区的右边界</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">lessR</span> <span class="operator">=</span> L-<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//more区的左边界</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">moreL</span> <span class="operator">=</span> R;</span><br><span class="line">        <span class="comment">//当前指针下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> L;</span><br><span class="line">        <span class="comment">//划分值下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">poivt</span> <span class="operator">=</span> R;</span><br><span class="line">        <span class="keyword">while</span>(index &lt; moreL) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[index] &lt; arr[poivt])&#123;</span><br><span class="line">                swap(arr,++lessR,index++);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>  (arr[index] &gt; arr[poivt])&#123;</span><br><span class="line">                swap(arr,--moreL,index);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                index++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 第4步</span></span><br><span class="line">        swap(arr,moreL,poivt);</span><br><span class="line">        <span class="comment">//返回左右边界</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;lessR+<span class="number">1</span>,moreL&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 递归函数</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">quickSortByRecursive</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line">        process(arr,<span class="number">0</span>,arr.length -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//递归</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(<span class="type">int</span>[] arr,<span class="type">int</span>  L , <span class="type">int</span> R)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(L &gt;= R) <span class="keyword">return</span>;</span><br><span class="line">        <span class="type">int</span>[] equalRange = partition(arr,L,R);</span><br><span class="line">        <span class="comment">// equalRange[0],等于区域的第一个数</span></span><br><span class="line">        <span class="comment">// equalRange[1],等于区域的最后一个数</span></span><br><span class="line">        process(arr,L,equalRange[<span class="number">0</span>]-<span class="number">1</span>);</span><br><span class="line">        process(arr,equalRange[<span class="number">1</span>]+<span class="number">1</span>,R);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 4. 快速排序非递归实现</span></span><br><span class="line"><span class="comment">     *  用Stack栈做任务,每一个最小任务就是一个荷兰国旗问题,还是使用partition方法来实现分层。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">//任务定义</span></span><br><span class="line">    <span class="keyword">public</span>  <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Job</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> L;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> R;</span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Job</span><span class="params">(<span class="type">int</span> left, <span class="type">int</span> right)</span> &#123;</span><br><span class="line">            L = left;</span><br><span class="line">            R = right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">quickSortByNotRecursive</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr == <span class="literal">null</span> || arr.length &lt; <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Stack&lt;Job&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">        stack.push(<span class="keyword">new</span> <span class="title class_">Job</span>(<span class="number">0</span>, arr.length - <span class="number">1</span>));</span><br><span class="line">        <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">            <span class="type">Job</span> <span class="variable">cur</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">            <span class="type">int</span>[] equals = partition(arr, cur.L, cur.R);</span><br><span class="line">            <span class="keyword">if</span> (equals[<span class="number">0</span>] &gt; cur.L) &#123; <span class="comment">// 有&lt; 区域</span></span><br><span class="line">                stack.push(<span class="keyword">new</span> <span class="title class_">Job</span>(cur.L, equals[<span class="number">0</span>] - <span class="number">1</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (equals[<span class="number">1</span>] &lt; cur.R) &#123; <span class="comment">// 有 &gt; 区域</span></span><br><span class="line">                stack.push(<span class="keyword">new</span> <span class="title class_">Job</span>(equals[<span class="number">1</span>] + <span class="number">1</span>, cur.R));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> arr</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> i</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> j</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span>[] arr, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = arr[j];</span><br><span class="line">        arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">选择排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">思考过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">时间复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">冒泡排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E8%BF%87%E7%A8%8B-1"><span class="toc-number">2.1.</span> <span class="toc-text">思考过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.2.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90-1"><span class="toc-number">2.3.</span> <span class="toc-text">时间复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">插入排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">4.</span> <span class="toc-text">归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">4.1.</span> <span class="toc-text">递归实现思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">4.2.</span> <span class="toc-text">非递归实现思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">4.3.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">快速排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#D-amp-C-%E6%80%9D%E6%83%B3"><span class="toc-number">5.1.</span> <span class="toc-text">D &amp; C 思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8D%B7%E5%85%B0%E5%9B%BD%E6%97%97%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">荷兰国旗问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%9C%BA%E6%99%AF"><span class="toc-number">5.3.</span> <span class="toc-text">简单场景:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E5%9C%BA%E6%99%AF"><span class="toc-number">5.4.</span> <span class="toc-text">进阶场景:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E6%8E%92%E7%9A%84%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.5.</span> <span class="toc-text">快排的递归实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%80%92%E5%BD%92%E7%89%88%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="toc-number">5.6.</span> <span class="toc-text">非递归版本思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-3"><span class="toc-number">5.7.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&text=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&is_video=false&description=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=排序算法/选择,插入,冒泡，归并和快速排序&body=Check out this article: https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&title=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&name=排序算法/选择,插入,冒泡，归并和快速排序&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fubinh521.github.io/2023/02/09/algorithm/algorithm-quickstart-sort/&t=排序算法/选择,插入,冒泡，归并和快速排序"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2014-2023
+    Bin Fu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     --><!--
+       --><li><a href="/categories/">categories</a></li><!--
+     --><!--
+       --><li><a href="/tags/">tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fubinh521/fubinh521.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
